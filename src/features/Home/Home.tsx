@@ -1,30 +1,33 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import {
-  Button,
-  HomeCard,
-  HomeContainer,
-  HomeTitle,
-  Input,
-  Text,
-} from "./style";
+import { createDoc } from "./service";
+
+import { Button, HomeCard, HomeContainer, HomeTitle, Input, Text } from "./style";
 
 const Home = () => {
   const [docId, setDocId] = useState("");
+  const navigate = useNavigate();
 
-  const onCreateDoc = () => {
-    // call the create doc service
-    // on success navigate to doc editor with doc id
-    openDocEditor("");
+  const onCreateDoc = async () => {
+    const { docId, error } = await createDoc();
+    if (docId) {
+      openDocEditor(docId);
+    } else {
+      alert(error);
+    }
   };
 
   const onOpenDoc = () => {
-    // navigate to the doc editor with doc id
-    openDocEditor(docId);
+    if (docId) {
+      openDocEditor(docId);
+    } else {
+      alert("Please enter doc id");
+    }
   };
 
   const openDocEditor = (docId: string) => {
-    // navigate to doc editor with doc id
+    navigate(`/doc-editor/${docId}`);
   };
 
   return (

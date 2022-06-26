@@ -1,10 +1,10 @@
-import axios from "axios";
+import axiosInstance from "../../shared/axios";
 
 export const createDoc = async () => {
   try {
-    const { data } = await axios.post("/doc");
-    console.log({ data });
-  } catch (error) {
-    console.log({ error });
+    const { data } = await axiosInstance.post("/docs");
+    return { docId: data.res };
+  } catch (err) {
+    return { error: err };
   }
 };
