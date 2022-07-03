@@ -5,11 +5,12 @@ import { useParams } from "react-router-dom";
 import { getDocById } from "./service";
 import { FAKE_ID } from "../../shared/constants";
 import { destroyWorker, initializeWorker, updateDoc } from "./utils";
+
 import { DocEditorContainer, DocEditorTitle, StyledDocEditor } from "./style";
 
 const DocEditor = () => {
   const [content, setContent] = useState("");
-  const [message, setMessage] = useState("Loading Doc....");
+  const [message, setMessage] = useState("");
   const { docId = FAKE_ID } = useParams();
 
   const getDoc = useCallback(async () => {
@@ -30,11 +31,14 @@ const DocEditor = () => {
     return () => destroyWorker();
   }, [docId]);
 
-  const onContentChange = (e: any) => {
-    const { value } = e.target;
+  const onContentChange = (value: string) => {
     setContent(value);
     updateDoc(docId, value);
   };
+
+  if (message) {
+    return <DocEditorTitle>{message}</DocEditorTitle>;
+  }
 
   return (
     <DocEditorContainer>
